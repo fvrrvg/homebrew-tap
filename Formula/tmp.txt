@@ -1,0 +1,41 @@
+class {{package name}} < Formula
+  desc "{{ package description}}"
+  homepage "https://github.com/fvrrvg/{{package name}}"
+  version "0.0.1"
+  license "MIT"
+
+  depends_on "git"
+  depends_on "go" => :optional
+
+  if OS.mac?
+    if Hardware::CPU.intel?
+      url ""
+      sha256 ""
+    elsif Hardware::CPU.arm?
+      url ""
+      sha256 
+    end
+  elsif OS.linux?
+    if Hardware::CPU.intel?
+      url ""
+      sha256 
+    end
+  end
+
+   
+  def install
+    bin.install "{{package name}}"
+
+     # Install bash completion
+     output = Utils.safe_popen_read({ "SHELL" => "bash" }, "#{bin}/{{package name}}", "completion", "bash")
+     (bash_completion/"{{package name}}").write output
+ 
+     # Install zsh completion
+     output = Utils.safe_popen_read({ "SHELL" => "zsh" }, "#{bin}/{{package name}}", "completion", "zsh")
+     (zsh_completion/"_{{package name}}").write output
+
+     # Install fish completion
+      output = Utils.safe_popen_read({ "SHELL" => "fish" }, "#{bin}/{{package name}}", "completion", "fish")
+      (fish_completion/"{{package name}}.fish").write output
+  end
+end
